@@ -1,1 +1,119 @@
 /* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+/* @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&display=swap");
+
+body {
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+/********************* Nav **********************/
+
+header .nav {
+  height: 100px;
+  background: #ffffff;
+  box-shadow: 0px -3px 50px rgba(0, 0, 0, 0.1);
+  border-radius: 0px 0px 30px 30px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+header .nav a.active {
+  font-weight: 600;
+}
+
+header .nav a {
+  font-weight: 400;
+}
+
+header .nav a.active {
+  color: #14a38b;
+}
+
+/********************* Titles **********************/
+
+.title {
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 36.4px;
+}
+
+.page-header {
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 62px;
+  letter-spacing: 1.5px;
+}
+
+.other-title {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18.2px;
+}
+
+.details-title {
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 36px;
+  color: #000000;
+}
+
+/********************* Item Card **********************/
+
+.card {
+  background: #fbfbfb;
+  border-radius: 15px;
+  border: 0;
+}
+
+.truncate-overflow {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+span.normal-price {
+  text-decoration: line-through;
+}
+
+span.sale-price {
+  color: #14a38b;
+}
+
+.form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 2.375rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+}
+
+/********************* Inputs **********************/
+
+select.form-control {
+  background: #fcfcfc;
+  border-color: #fcfcfc;
+  font-size: 28px;
+  line-height: 36px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 1.5px;
+  color: #2c2738;
+}
+
+input#on-sale {
+  margin-left: 80px;
+}
+
+.caret {
+  width: 10px;
+  color: #000;
+  height: 10px;
+  margin-top: auto;
+  margin-bottom: auto;
+}

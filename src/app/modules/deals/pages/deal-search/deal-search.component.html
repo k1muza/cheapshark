@@ -1,0 +1,45 @@
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="page-header">Searching {{searchQuery?.value}}</h1>
+    </div>
+    <div class="col-md-3">
+        <form [formGroup]="form">
+            <div class="form-group">
+                <span class="fa fa-search form-control-feedback"></span>
+                <input type="search" formControlName="searchQuery" class="form-control"
+                    placeholder="Search deals by name">
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col">
+        <div class="form-group">
+            <select name="filters" id="filters" class="form-control form-select">
+                <option value="null">Filters</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col">
+        <div class="form-group mb-4">
+            <label for="on-sale">On Sale</label>
+            <input class="form-check-input" type="checkbox" value="" id="on-sale" checked>
+        </div>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 my-4">
+    <div *ngFor="let deal of deals; trackBy:trackByDealID" class="col">
+        <app-deal-list-item [deal]="deal"></app-deal-list-item>
+    </div>
+</div>
+
+<div class="row my-4">
+    <div class="col text-center">
+        <button class="btn btn-primary" (click)="loadMore()">Load More</button>
+    </div>
+</div>
