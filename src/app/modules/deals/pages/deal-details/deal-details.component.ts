@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 
-import { DealService } from 'src/app/core/mocks/deal.service';
+import { DealService } from 'src/app/core/services/deal.service';
 import { Deal } from 'src/app/core/models/deal';
+import { SubSink } from 'subsink';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-deal-details',
@@ -13,14 +14,27 @@ import { Deal } from 'src/app/core/models/deal';
 })
 export class DealDetailsComponent implements OnInit {
 
-  deal$: Observable<Deal>;
+  deal: Deal;
+  otherGameDeals: any[];
 
-  constructor(private route: ActivatedRoute, private dealService: DealService) { }
+  private subSink = new SubSink();
+
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private dealService: DealService) { }
 
   ngOnInit(): void {
-    this.deal$ = this.route.params.pipe(
-      switchMap(({ dealID }) => this.dealService.getDeal(dealID)),
-    )
+    this.subSink.sink = this.getDealFromQuery().subscribe(deal => {
+      this.deal = deal;
+    })
+  }
+
+  getDealFromQuery() {
+    return this.route.queryParams as Observable<Deal>
+  }
+
+  getSavings(): number {
+    return +this.deal.normalPrice - +this.deal.salePrice
   }
 }
 

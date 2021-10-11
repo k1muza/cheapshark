@@ -1,18 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { StoresRoutingModule } from './stores-routing.module';
-import { ListComponent } from './pages/list/list.component';
-import { DetailsComponent } from './pages/details/details.component';
+import { StoreListComponent } from './pages/store-list/store-list.component';
+import { StoreDetailsComponent } from './pages/store-details/store-details.component';
+import { StoreCardComponent } from './components/store-card/store-card.component';
 
 
 @NgModule({
   declarations: [
-    ListComponent,
-    DetailsComponent
+    StoreDetailsComponent,
+    StoreListComponent,
+    StoreCardComponent
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     StoresRoutingModule
   ]
 })

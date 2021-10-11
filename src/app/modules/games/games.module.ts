@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { GamesRoutingModule } from './games-routing.module';
-import { ListComponent } from './pages/list/list.component';
-import { DetailsComponent } from './pages/details/details.component';
+import { GameListComponent } from './pages/game-list/game-list.component';
+import { GameDetailsComponent } from './pages/game-details/game-details.component';
 
 
 @NgModule({
   declarations: [
-    ListComponent,
-    DetailsComponent
+    GameListComponent,
+    GameDetailsComponent
   ],
   imports: [
     CommonModule,

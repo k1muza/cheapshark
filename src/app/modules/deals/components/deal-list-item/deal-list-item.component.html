@@ -1,11 +1,8 @@
 <div class="card mb-4 rounded-3">
     <div class="card-body">
-        <h3 class="title truncate-overflow">{{deal.title}}</h3>
-        <p class="list-unstyled mt-3 mb-4">
-            <span class="normal-price mr-2">${{deal.normalPrice}}</span> <span
-                class="sale-price">${{deal.salePrice}}</span>
-        </p>
-        <button type="button" class="btn btn-outline-dark" routerLink="/deals/details/{{deal.dealID}}">View
+        <h3 class="title text-truncate">{{deal.title}}</h3>
+        <app-prices [normalPrice]="deal.normalPrice" [salePrice]="deal.salePrice"></app-prices>
+        <button type="button" class="btn btn-outline-dark mt-4" (click)="onViewMore()">View
             More</button>
     </div>
 </div>

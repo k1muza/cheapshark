@@ -11,21 +11,36 @@
         </div>
     </div>
 
-    <div class="row mb-4">
+    <div *ngIf="deals?.length" class="row mb-4">
         <div class="col">
             <app-deal-filters formControlName="onSale"></app-deal-filters>
         </div>
     </div>
 </form>
 
-<div class="row row-cols-1 row-cols-md-3 my-4">
-    <div *ngFor="let deal of deals; trackBy:trackByDealID" class="col">
-        <app-deal-list-item [deal]="deal"></app-deal-list-item>
+<ng-container *ngIf="deals?.length">
+    <div class="row row-cols-1 row-cols-md-3 my-4">
+        <div *ngFor="let deal of deals; trackBy:trackByDealID" class="col">
+            <app-deal-list-item [deal]="deal"></app-deal-list-item>
+        </div>
     </div>
-</div>
 
-<div class="row my-4">
-    <div class="col text-center">
-        <button class="btn btn-primary" (click)="addPage()">Load More</button>
+    <div class="row my-4">
+        <div class="col">
+            <app-pagination [pageNumber]="pageNumber.value" [pageSize]="pageSize.value" [totalItems]="totalItems"
+                (pageChanged)="updatePageNumber($event)">
+            </app-pagination>
+        </div>
     </div>
-</div>
+</ng-container>
+
+<ng-container *ngIf="isLoading()">
+    <div class="spinner-grow"></div>
+    <span class="ms-4">Loading...</span>
+</ng-container>
+
+<ng-container *ngIf="isError()">
+    <div class="alert alert-danger" role="alert">
+        Error: {{error}}
+    </div>
+</ng-container>

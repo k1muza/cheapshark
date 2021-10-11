@@ -1,0 +1,17 @@
+<form [formGroup]="form">
+    <div class="form-group row my-4">
+        <div class="col">
+            <h3>Stores</h3>
+        </div>
+        <div class="col-md-4">
+            <input type="search" formControlName="storeName" class="form-control" placeholder="Search store by name..."
+                autocomplete="off">
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <div *ngFor="let store of stores; trackBy:trackByStoreID" class="col-md-4 my-2">
+        <app-store-card [store]="store"></app-store-card>
+    </div>
+</div>

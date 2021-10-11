@@ -1,0 +1,12 @@
+<div class="card">
+    <div class="store-image"
+        [ngStyle]="{'background-image': 'url(https://www.cheapshark.com/' + store?.images.banner + ')'}">
+
+    </div>
+    <div class="card-body">
+        <h4 class="text-truncate">{{store.storeName}}</h4>
+        <p>{{totalDeals}} deals</p>
+
+        <button routerLink="/stores/details/{{store.storeID}}" class="btn btn-outline-secondary">View More</button>
+    </div>
+</div>

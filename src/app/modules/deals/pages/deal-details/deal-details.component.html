@@ -1,38 +1,20 @@
-<div class="row mt-4">
+<div *ngIf="deal" class="row mt-4">
     <div class="col">
-        <h2 class="details-title mb-4">Deal Title</h2>
+        <h2 class="details-title mb-4">{{deal?.title}}</h2>
+        <div class="d-flex">
+            <app-prices [normalPrice]="deal.normalPrice" [salePrice]="deal.salePrice"></app-prices>
+            <p class="ms-auto font-italic">You save {{getSavings() | currency}}</p>
+        </div>
+
+        <div class="alert alert-secondary" role="alert">
+            Available at {{deal?.storeName}}
+        </div>
+
+        <div class="card">
+            <img [src]="deal.thumb" [alt]="deal.title">
+        </div>
     </div>
     <div class="col">
-        <h3 class="mb-4">Other deals for this game</h3>
-        <div class="table-responsive">
-            <table class="table text-center">
-                <tbody>
-                    <tr>
-                        <th scope="row" class="text-start">
-                            <h4 class="other-title">Other 1</h4>
-                        </th>
-                        <td class="text-right">
-                            <button class="btn btn-sm btn-outline-dark">View More</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row" class="text-start">
-                            <h4 class="other-title">Other 2</h4>
-                        </th>
-                        <td class="text-right">
-                            <button class="btn btn-sm btn-outline-dark">View More</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row" class="text-start">
-                            <h4 class="other-title">Other 3</h4>
-                        </th>
-                        <td class="text-right">
-                            <button class="btn btn-sm btn-outline-dark">View More</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <app-game-deal-list [title]="deal.title" [header]="'Other deals for this game'"></app-game-deal-list>
     </div>
 </div>

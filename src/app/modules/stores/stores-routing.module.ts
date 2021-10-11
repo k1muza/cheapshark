@@ -1,11 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ListComponent } from './pages/list/list.component';
+import { StoreDetailsComponent } from './pages/store-details/store-details.component';
+import { StoreListComponent } from './pages/store-list/store-list.component';
 
 const routes: Routes = [
   {
     path: 'list',
-    component: ListComponent
+    component: StoreListComponent,
+  },
+  {
+    path: 'details/:storeID',
+    component: StoreDetailsComponent,
   },
   {
     path: '',

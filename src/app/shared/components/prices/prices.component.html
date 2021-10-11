@@ -1,0 +1,11 @@
+<ng-container *ngIf="hasSalePrice()">
+    <p class="list-unstyled m-0">
+        <span class="me-2"><del>${{normalPrice}}</del></span>
+        <span class="fw-bolder text-success">${{salePrice}}</span>
+    </p>
+</ng-container>
+<ng-container *ngIf="!hasSalePrice()">
+    <p class="list-unstyled m-0">
+        <span class="fw-bolder text-success">${{normalPrice}}</span>
+    </p>
+</ng-container>

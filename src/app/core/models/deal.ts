@@ -4,6 +4,7 @@ export interface Deal {
     metacriticLink?: string;
     dealID: string;
     storeID?: string;
+    storeName?: string;
     gameID?: string;
     salePrice?: string;
     normalPrice?: string;

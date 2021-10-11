@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { APIResponse } from '../models/api-response';
 
 import { Deal } from '../models/deal';
 import { DealQueryParams } from '../models/deal-query-params';
@@ -17,9 +18,9 @@ export class DealService {
       "dealID": "HhzMJAgQYGZ%2B%2BFPpBG%2BRFcuUQZJO3KXvlnyYYGwGUfU%3D",
       "storeID": "1",
       "gameID": "102249",
-      "salePrice": "2.99",
+      "salePrice": null,
       "normalPrice": "19.99",
-      "isOnSale": "1",
+      "isOnSale": "0",
       "savings": "85.042521",
       "metacriticScore": "91",
       "steamRatingText": "Very Positive",
@@ -1274,10 +1275,10 @@ export class DealService {
 
   constructor() { }
 
-  getDeals(args: DealQueryParams): Observable<Deal[]> {
+  getDeals(args: DealQueryParams): Observable<APIResponse> {
     let { pageNumber, pageSize, onSale, title } = args
-    console.log(title)
 
+    // let deals = JSON.parse(localStorage.get('deals')) as Deal[]
     let deals = this.deals;
 
     if (onSale)
@@ -1286,18 +1287,25 @@ export class DealService {
     if (title)
       deals = deals.filter(deal => deal.title.toLowerCase().includes(title.toLowerCase()))
 
+    const totalItems = deals.length
+
     pageNumber = +pageNumber || 1
     pageSize = +pageSize || 6
 
     const start = (pageNumber - 1) * pageSize;
     const end = start + pageSize;
-    console.log(start, end);
+
     deals = deals.slice(start, end)
 
-    return of(deals)
+    return of({ totalItems, items: deals })
   }
 
   getDeal(dealID: string): Observable<Deal> {
     return of(this.deals.find(deal => deal.dealID == dealID))
+  }
+
+  getOtherGameDeals(gameID: string): Observable<APIResponse> {
+    const deals = this.deals.filter(deal => deal.gameID == gameID)
+    return of({ totalItems: deals.length, items: deals })
   }
 }

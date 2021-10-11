@@ -73,14 +73,6 @@ header .nav a.active {
   text-overflow: ellipsis;
 }
 
-span.normal-price {
-  text-decoration: line-through;
-}
-
-span.sale-price {
-  color: #14a38b;
-}
-
 .form-control-feedback {
   position: absolute;
   z-index: 2;
@@ -116,4 +108,27 @@ input#on-sale {
   height: 10px;
   margin-top: auto;
   margin-bottom: auto;
+}
+
+/****************** Footer ****************************/
+
+app-footer {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+
+app-footer nav {
+  border-top: 1px solid #eee;
+  background: #ffffff;
+  box-shadow: 0px 0px 20px rgb(110 110 110 / 40%);
+  padding: 20px;
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
+}
+
+/****************************************/
+.spinner-grow {
+  width: 1rem;
+  height: 1rem;
 }

@@ -2,12 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { SubSink } from 'subsink';
-import { first, switchMap } from 'rxjs/operators';
+import { catchError, debounceTime, switchMap, tap } from 'rxjs/operators';
 
 import { DealService } from 'src/app/core/mocks/deal.service';
 import { Deal } from 'src/app/core/models/deal';
 import { DealQueryParams } from 'src/app/core/models/deal-query-params';
-import { combineLatest } from 'rxjs';
+import { forkJoin, merge, of } from 'rxjs';
 
 @Component({
   selector: 'app-deal-list',
@@ -17,11 +17,23 @@ import { combineLatest } from 'rxjs';
 export class DealListComponent implements OnInit, OnDestroy {
 
   public deals: Deal[] = [];
+
+  public loading: boolean;
+
+  public error: string;
+
+  public totalItems: number;
+
   form: FormGroup = new FormGroup({
+
     title: new FormControl(''),
+
     onSale: new FormControl(false),
+
     pageNumber: new FormControl(1),
+
     pageSize: new FormControl(6)
+
   });
 
   get title() {
@@ -30,6 +42,10 @@ export class DealListComponent implements OnInit, OnDestroy {
 
   get onSale() {
     return this.form.get('onSale');
+  }
+
+  get pageSize() {
+    return this.form.get('pageSize');
   }
 
   get pageNumber() {
@@ -44,33 +60,42 @@ export class DealListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    // Update form if user navigates to a pre-queried url
+    // Pre-fill form with query params in url
 
-    this.subSink.sink = this.route.queryParams.pipe(first()).subscribe(params => {
-      this.form.patchValue(params)
-    })
+    this.form.patchValue(this.route.snapshot.queryParams)
 
-    // Fetch only according to url query Params e.g. pageNumber, title etc
+    // Listen to changes in url query params (e.g. pageNumber, title etc) and fetch
 
     this.subSink.sink = this.route.queryParams.pipe(
-      switchMap((params: DealQueryParams) => {
-        return this.dealService.getDeals(params)
+
+      tap(() => this.loading = true),
+      debounceTime(500),
+      switchMap((params: DealQueryParams) => this.dealService.getDeals(params)),
+
+      catchError(err => {
+        this.error = err.message
+        return of(null)
       })
-    ).subscribe(items => {
-      if (this.pageNumber.value > 1)
-        items.forEach((item) => {
-          this.deals.push(item)
-        })
-      else
+
+    ).subscribe((resp) => {
+      console.log(resp)
+      if (resp) {
+        const { items, totalItems } = resp
+
+        this.totalItems = totalItems;
         this.deals = items
+        this.error = ''
+      }
+      this.loading = false
     });
 
     // If either search or onSale filter is updated reset pageNumber to 1
 
-    this.subSink.sink = combineLatest([
-      this.title.valueChanges,
-      this.onSale.valueChanges
-    ]).subscribe(_ => {
+    this.subSink.sink = this.title.valueChanges.subscribe(_ => {
+      this.resetPage()
+    })
+
+    this.subSink.sink = this.onSale.valueChanges.subscribe(_ => {
       this.resetPage()
     })
   }
@@ -78,22 +103,23 @@ export class DealListComponent implements OnInit, OnDestroy {
   // Update url query params from form values
 
   updateUrlParams() {
-    const formValues = this.form.value;
+
     const queryParams: Params = {}
 
-    for (const key in formValues) {
-      if (Object.prototype.hasOwnProperty.call(formValues, key)) {
-        const element = formValues[key];
+    for (const key in this.form.value) {
+
+      if (Object.prototype.hasOwnProperty.call(this.form.value, key)) {
+        const element = this.form.value[key];
         if (element)
           queryParams[key] = element
       }
     }
 
-    this.router.navigate([], { queryParams, replaceUrl: true },)
+    this.router.navigate([], { queryParams, replaceUrl: true })
   }
 
-  addPage() {
-    this.pageNumber.patchValue(parseInt(this.pageNumber.value) + 1);
+  updatePageNumber(pageNumber: number) {
+    this.pageNumber.patchValue(+pageNumber);
     this.updateUrlParams()
   }
 
@@ -108,7 +134,23 @@ export class DealListComponent implements OnInit, OnDestroy {
     return deal.dealID;
   }
 
+  isError() {
+    return this.error
+  }
+
+  isLoading() {
+    return !this.isError && this.loading
+  }
+
+  isEmpty() {
+    return !this.isError() && !this.isLoading && !this.deals.length
+  }
+
+  // Tiding up before we leave 
+
   ngOnDestroy(): void {
+
     this.subSink.unsubscribe()
+
   }
 }
