@@ -11,14 +11,14 @@
         </div>
     </div>
 
-    <div *ngIf="deals?.length" class="row mb-4">
+    <div *ngIf="isLoaded()" class="row mb-4">
         <div class="col">
             <app-deal-filters formControlName="onSale"></app-deal-filters>
         </div>
     </div>
 </form>
 
-<ng-container *ngIf="deals?.length">
+<ng-container *ngIf="isLoaded()">
     <div class="row row-cols-1 row-cols-md-3 my-4">
         <div *ngFor="let deal of deals; trackBy:trackByDealID" class="col">
             <app-deal-list-item [deal]="deal"></app-deal-list-item>
@@ -42,5 +42,11 @@
 <ng-container *ngIf="isError()">
     <div class="alert alert-danger" role="alert">
         Error: {{error}}
+    </div>
+</ng-container>
+
+<ng-container *ngIf="isEmpty()">
+    <div class="alert alert-warning" role="alert">
+        Nothing here...
     </div>
 </ng-container>

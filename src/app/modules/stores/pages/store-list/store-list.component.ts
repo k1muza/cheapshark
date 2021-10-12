@@ -2,10 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, first, switchMap } from 'rxjs/operators';
+import { SubSink } from 'subsink';
+
 import { Store } from 'src/app/core/models/store';
 import { StoreQueryParams } from 'src/app/core/models/store-query-params';
 import { StoreService } from 'src/app/core/services/store.service';
-import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-store-list',

@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { combineLatest, Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { uniqBy } from 'lodash';
 
 import { environment } from 'src/environments/environment';
@@ -20,25 +20,24 @@ export class DealService {
   constructor(private http: HttpClient, private storeService: StoreService) { }
 
   getDeals(params: DealQueryParams = null): Observable<APIResponse> {
-
     let httpParams = new HttpParams()
-
-    if (!params.pageNumber) {
-      params = { ...params, pageNumber: 1, pageSize: 6 }
-    }
-
-    if (params.onSale)
-      params.onSale = +params.onSale
-
     for (let [key, value] of Object.entries(params)) {
       httpParams = httpParams.set(key, value)
     }
+
+    const { pageNumber, onSale } = params
+
+    if (!pageNumber) {
+      httpParams = httpParams.set('pageNumber', 1).set('pageSize', 6)
+    }
+
+    if (params.onSale)
+      httpParams = httpParams.set('onSale', +onSale)
 
     return this._getDealsByParams(httpParams)
   }
 
   getDealsByGame(title: string): Observable<APIResponse> {
-
     let httpParams = new HttpParams().set('title', title).set('exact', 1).set('sortBy', 'Price')
 
     return this._getDealsByParams(httpParams)
@@ -56,6 +55,7 @@ export class DealService {
 
   getLocalStorageDeal(id: string): Observable<Deal> {
     const deals = JSON.parse(localStorage.getItem('deals'))
+
     return of(deals.find((deal: Deal) => deal.dealID === id))
   }
 
@@ -73,7 +73,6 @@ export class DealService {
       map(resp => {
         return { totalItems: +resp.headers.get('X-Total-Page-Count'), items: resp.body }
       }),
-
     )
   }
 

@@ -24,7 +24,7 @@ export class DealListItemComponent implements OnInit {
 
     const queryParams: Params = {}
     attribs.forEach(attrib => {
-      queryParams[attrib] = (this.deal as any)[attrib]
+      queryParams[attrib] = (<any>this.deal)[attrib]
     })
 
     console.log(queryParams)

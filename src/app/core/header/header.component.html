@@ -19,14 +19,12 @@
                 </defs>
             </svg>
 
-            <span class="ml-4 title">CheapShark</span>
+            <span class="ml-4 title">{{title}}</span>
         </a>
 
         <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto d-none d-sm-none d-md-block">
-            <a class="me-4 py-2 text-dark text-decoration-none" routerLink="/deals" routerLinkActive="active">Deals</a>
-            <a class="me-4 py-2 text-dark text-decoration-none" routerLink="/games" routerLinkActive="active">Games</a>
-            <a class="me-4 py-2 text-dark text-decoration-none" routerLink="/stores"
-                routerLinkActive="active">Stores</a>
+            <a class="me-4 py-2 text-dark text-decoration-none" *ngFor="let routeName of routeNames"
+                [routerLink]="'/' + routeName" routerLinkActive="active">{{routeName | titlecase}}</a>
         </nav>
     </div>
 </header>

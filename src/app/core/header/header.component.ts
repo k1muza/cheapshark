@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
+  title = 'CheapShark'
+  routeNames = ['deals', 'games', 'stores']
+
   constructor() { }
 
   ngOnInit(): void {

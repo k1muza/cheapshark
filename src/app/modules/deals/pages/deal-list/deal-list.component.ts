@@ -4,10 +4,11 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { SubSink } from 'subsink';
 import { catchError, debounceTime, switchMap, tap } from 'rxjs/operators';
 
-import { DealService } from 'src/app/core/mocks/deal.service';
+import { MockDealService } from 'src/app/core/mocks/deal.service';
 import { Deal } from 'src/app/core/models/deal';
 import { DealQueryParams } from 'src/app/core/models/deal-query-params';
-import { forkJoin, merge, of } from 'rxjs';
+import { DealService } from 'src/app/core/services/deal.service';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-deal-list',
@@ -16,24 +17,16 @@ import { forkJoin, merge, of } from 'rxjs';
 })
 export class DealListComponent implements OnInit, OnDestroy {
 
-  public deals: Deal[] = [];
-
-  public loading: boolean;
-
+  public deals: Deal[];
+  public loading = false;
   public error: string;
-
   public totalItems: number;
 
   form: FormGroup = new FormGroup({
-
     title: new FormControl(''),
-
     onSale: new FormControl(false),
-
     pageNumber: new FormControl(1),
-
     pageSize: new FormControl(6)
-
   });
 
   get title() {
@@ -54,7 +47,7 @@ export class DealListComponent implements OnInit, OnDestroy {
 
   private subSink = new SubSink();
 
-  constructor(private dealService: DealService,
+  constructor(private dealService: MockDealService,
     private route: ActivatedRoute,
     private router: Router) { }
 
@@ -67,8 +60,9 @@ export class DealListComponent implements OnInit, OnDestroy {
     // Listen to changes in url query params (e.g. pageNumber, title etc) and fetch
 
     this.subSink.sink = this.route.queryParams.pipe(
-
-      tap(() => this.loading = true),
+      tap(() => {
+        this.loading = true;
+      }),
       debounceTime(500),
       switchMap((params: DealQueryParams) => this.dealService.getDeals(params)),
 
@@ -139,18 +133,20 @@ export class DealListComponent implements OnInit, OnDestroy {
   }
 
   isLoading() {
-    return !this.isError && this.loading
+    return !this.isError() && this.loading
   }
 
   isEmpty() {
-    return !this.isError() && !this.isLoading && !this.deals.length
+    return !this.error && !this.loading && (!this.deals || !this.deals.length)
+  }
+
+  isLoaded() {
+    return !this.isLoading() && this.deals.length
   }
 
   // Tiding up before we leave 
 
   ngOnDestroy(): void {
-
     this.subSink.unsubscribe()
-
   }
 }

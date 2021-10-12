@@ -19,9 +19,7 @@ export class DealDetailsComponent implements OnInit {
 
   private subSink = new SubSink();
 
-  constructor(private route: ActivatedRoute,
-    private router: Router,
-    private dealService: DealService) { }
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.subSink.sink = this.getDealFromQuery().subscribe(deal => {

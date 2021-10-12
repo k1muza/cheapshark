@@ -17,8 +17,7 @@ export class StoreDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private storeService: StoreService,
-    private route: ActivatedRoute,
-    private router: Router) { }
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.subSink.sink = this.route.params.pipe(
