@@ -6,6 +6,12 @@ import { map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Store } from '../models/store';
 
+/**
+ * Assumption made here was stores do not change often. Only their deals change
+ * 
+ * The store service fetches all stores only on first call and saves them to both localStorage and memory
+ * On subsequent calls in-memory stores are returned, if page refreshed then localStorage stores are returned
+ */
 @Injectable({
   providedIn: 'root'
 })

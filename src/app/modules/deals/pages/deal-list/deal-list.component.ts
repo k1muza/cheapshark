@@ -3,12 +3,13 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { SubSink } from 'subsink';
 import { catchError, debounceTime, switchMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 import { MockDealService } from 'src/app/core/mocks/deal.service';
 import { Deal } from 'src/app/core/models/deal';
 import { DealQueryParams } from 'src/app/core/models/deal-query-params';
 import { DealService } from 'src/app/core/services/deal.service';
-import { of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-deal-list',
@@ -26,7 +27,7 @@ export class DealListComponent implements OnInit, OnDestroy {
     title: new FormControl(''),
     onSale: new FormControl(false),
     pageNumber: new FormControl(1),
-    pageSize: new FormControl(6)
+    pageSize: new FormControl(environment.defaultPageSize)
   });
 
   get title() {
@@ -47,7 +48,7 @@ export class DealListComponent implements OnInit, OnDestroy {
 
   private subSink = new SubSink();
 
-  constructor(private dealService: MockDealService,
+  constructor(private dealService: DealService,
     private route: ActivatedRoute,
     private router: Router) { }
 
@@ -72,7 +73,6 @@ export class DealListComponent implements OnInit, OnDestroy {
       })
 
     ).subscribe((resp) => {
-      console.log(resp)
       if (resp) {
         const { items, totalItems } = resp
 
@@ -141,7 +141,7 @@ export class DealListComponent implements OnInit, OnDestroy {
   }
 
   isLoaded() {
-    return !this.isLoading() && this.deals.length
+    return !this.error && !this.loading && this.deals.length
   }
 
   // Tiding up before we leave 

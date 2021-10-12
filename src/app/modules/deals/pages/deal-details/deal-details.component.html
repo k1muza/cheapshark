@@ -3,7 +3,7 @@
         <h2 class="details-title mb-4">{{deal?.title}}</h2>
         <div class="d-flex">
             <app-prices [normalPrice]="deal.normalPrice" [salePrice]="deal.salePrice"></app-prices>
-            <p class="ms-auto font-italic">You save {{getSavings() | currency}}</p>
+            <p class="ms-auto fst-italic">You save {{getSavings() | currency}}</p>
         </div>
 
         <div class="alert alert-secondary" role="alert">

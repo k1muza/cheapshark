@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://www.cheapshark.com/api/1.0/'
+  baseUrl: 'https://www.cheapshark.com/api/1.0/',
+  defaultPageSize: 12
 };
 
 /*

@@ -13,20 +13,18 @@ export class PaginationComponent implements OnChanges {
 
   @Output() pageChanged: EventEmitter<number> = new EventEmitter()
 
-  public pages: number;
+  public totalPages: number;
 
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
-
     // Update pageNumber on changes
 
-    this.pages = Math.ceil(this.totalItems / this.pageSize)
+    this.totalPages = Math.ceil(this.totalItems / this.pageSize)
   }
 
   hasNextPage(): boolean {
-    return this.pages > this.pageNumber
+    return this.totalPages > this.pageNumber
   }
 
   hasPreviousPage(): boolean {

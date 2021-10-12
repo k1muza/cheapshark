@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { deals } from 'src/app/core/mocks/data';
 
@@ -12,12 +12,13 @@ describe('DealListComponent', () => {
   let fixture: ComponentFixture<DealListComponent>;
   const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
   const activatedRouteSpy = new ActivatedRouteStub()
+  const dealServiceSpy = new MockDealService()
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DealListComponent],
       providers: [
-        { provide: DealService, useValue: new MockDealService() },
+        { provide: DealService, useValue: dealServiceSpy },
         { provide: Router, useValue: routerSpy },
         { provide: ActivatedRoute, useValue: activatedRouteSpy }
       ]
@@ -92,12 +93,6 @@ describe('DealListComponent', () => {
     component.deals = deals.slice(0, 6)
 
     expect(component.isLoaded()).toBeFalsy();
-
-    component.error = ''
-    component.loading = true
-    component.deals = deals.slice(0, 6)
-
-    expect(component.isLoaded()).toBeFalsy();
   })
 
   it('should be loaded if not error and not loading but with deals', () => {
@@ -108,9 +103,23 @@ describe('DealListComponent', () => {
     expect(component.isLoaded()).toBeTruthy();
   })
 
-  // it('retrieves the first 6 deals', () => {
-  //   fixture.detectChanges();
+  it('should load deals after 4 seconds', fakeAsync(() => {
+    component.deals = null
+    fixture.detectChanges();
+    component.ngOnInit()
+    tick(4000);
+    fixture.detectChanges();
+    expect(component.deals.length).toBe(6);
+    flush();
+  }));
 
-  //   expect(component.deals).toEqual(deals.slice(0, 6));
-  // });
+  it('should load deals after 4 seconds', fakeAsync(() => {
+    component.deals = null
+    fixture.detectChanges();
+    component.ngOnInit()
+    tick(4000);
+    fixture.detectChanges();
+    expect(component.deals.length).toBe(6);
+    flush();
+  }));
 });

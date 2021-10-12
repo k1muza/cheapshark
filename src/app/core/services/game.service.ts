@@ -7,6 +7,11 @@ import { environment } from 'src/environments/environment';
 import { GameResponse } from '../models/game-response';
 import { StoreService } from './store.service';
 
+
+/**
+ * Nothing in this service is used anymore, this however provides alternative means of getting deals related to a particular game
+ */
+
 @Injectable({
   providedIn: 'root'
 })

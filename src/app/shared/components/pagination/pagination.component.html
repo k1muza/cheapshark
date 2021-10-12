@@ -1,4 +1,4 @@
-<nav aria-label="Page navigation example">
+<nav class="d-flex" aria-label="Page navigation example">
     <ul class="pagination">
         <li class="page-item" [class.disabled]="!hasPreviousPage()">
             <button [disabled]="!hasPreviousPage()" (click)="onPageChanged(pageNumber-1)" class="page-link"
@@ -13,4 +13,6 @@
                 href="#">Next</button>
         </li>
     </ul>
+
+    <p class="ms-4">Page {{pageNumber}} of {{totalPages}}</p>
 </nav>

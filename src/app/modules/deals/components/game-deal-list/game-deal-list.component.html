@@ -6,12 +6,7 @@
                 <tr *ngFor="let deal of deals, trackBy: trackByDealID">
                     <th scope="row" class="text-start">
                         <h4 class="other-title">{{deal.storeName}}</h4>
-                        <p class="my-0">
-                            <small>
-                                <span class="normal-price me-2">{{deal.normalPrice | currency}}</span>
-                                <span class="sale-price">{{deal.salePrice | currency}}</span>
-                            </small>
-                        </p>
+                        <app-prices [normalPrice]="deal.normalPrice" [salePrice]="deal.salePrice"></app-prices>
                     </th>
                     <td class="text-end">
                         <button (click)="onViewMore(deal)" class="btn btn-sm btn-outline-dark">
