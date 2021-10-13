@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import { DealService } from 'src/app/core/services/deal.service';
 import { Deal } from 'src/app/core/models/deal';
 import { SubSink } from 'subsink';
 import { Observable } from 'rxjs';
@@ -12,7 +10,7 @@ import { Observable } from 'rxjs';
   templateUrl: './deal-details.component.html',
   styleUrls: ['./deal-details.component.scss']
 })
-export class DealDetailsComponent implements OnInit {
+export class DealDetailsComponent implements OnInit, OnDestroy {
 
   deal: Deal;
   otherGameDeals: any[];
@@ -33,6 +31,10 @@ export class DealDetailsComponent implements OnInit {
 
   getSavings(): number {
     return +this.deal.normalPrice - +this.deal.salePrice
+  }
+
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe()
   }
 }
 

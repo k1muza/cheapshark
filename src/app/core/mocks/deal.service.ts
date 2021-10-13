@@ -47,7 +47,9 @@ export class MockDealService {
 
   getDealsByGame(gameID: string): Observable<APIResponse> {
     const result = deals.filter(deal => deal.gameID == gameID)
-    return of({ totalItems: result.length, items: result })
+    return of({ totalItems: result.length, items: result }).pipe(
+      delay(3000)
+    )
   }
 
   getStoreDealCounts(storeID: string): Observable<number> {

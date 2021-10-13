@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { MockDealService } from 'src/app/core/mocks/deal.service';
 import { DealService } from 'src/app/core/services/deal.service';
@@ -25,10 +25,42 @@ describe('GameDealListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GameDealListComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+
+    console.log(component.deals)
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it(`initial 'deals' to be undefined`, () => {
+    expect(component.deals).toBeUndefined();
+  });
+
+  it(`initial 'loading' to be false`, () => {
+    expect(component.loading).toBeFalsy();
+  })
+
+  it(`initial 'error' to be undefined`, () => {
+    expect(component.error).toBeFalsy();
+  })
+
+  it('should load deals after 2 seconds', fakeAsync(() => {
+    fixture.detectChanges();
+    component.ngOnInit()
+    tick(2000);
+    fixture.detectChanges();
+    expect(component.isLoading()).toBeTruthy();
+    expect(component.deals).toBeFalsy();
+    flush();
+  }));
+
+  it('should load deals after 4 seconds', fakeAsync(() => {
+    fixture.detectChanges();
+    component.ngOnInit()
+    tick(4000);
+    fixture.detectChanges();
+    expect(component.deals).toBeTruthy();
+    flush();
+  }));
 });

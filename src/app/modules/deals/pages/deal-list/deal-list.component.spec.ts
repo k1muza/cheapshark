@@ -112,14 +112,4 @@ describe('DealListComponent', () => {
     expect(component.deals.length).toBe(6);
     flush();
   }));
-
-  it('should load deals after 4 seconds', fakeAsync(() => {
-    component.deals = null
-    fixture.detectChanges();
-    component.ngOnInit()
-    tick(4000);
-    fixture.detectChanges();
-    expect(component.deals.length).toBe(6);
-    flush();
-  }));
 });

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Params, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -11,12 +11,12 @@ import { SubSink } from 'subsink';
   templateUrl: './game-deal-list.component.html',
   styleUrls: ['./game-deal-list.component.scss']
 })
-export class GameDealListComponent implements OnInit {
+export class GameDealListComponent implements OnInit, OnDestroy {
   @Input() title: string
   @Input() header: string
 
-  deals: Deal[]
-  subSink = new SubSink()
+  deals: Deal[];
+  subSink = new SubSink();
 
   public loading: boolean;
   public error: string;
@@ -24,12 +24,16 @@ export class GameDealListComponent implements OnInit {
   constructor(private dealService: DealService, private router: Router) { }
 
   ngOnInit(): void {
+    this.loading = true;
+    console.log('onInit', this.loading)
+
     this.subSink.sink = this.dealService.getDealsByGame(this.title).pipe(
-      tap(() => this.loading = true),
+
       catchError(err => {
         this.error = err.message
         return of(null)
       }),
+
     ).subscribe((resp) => {
 
       if (resp) {
@@ -65,10 +69,18 @@ export class GameDealListComponent implements OnInit {
   }
 
   isLoading() {
-    return !this.isError && this.loading
+    return !this.isError() && this.loading
   }
 
   isEmpty() {
-    return !this.isError() && !this.isLoading && !this.deals.length
+    return !this.error && !this.loading && (!this.deals || !this.deals.length)
+  }
+
+  isLoaded() {
+    return !this.error && !this.loading && this.deals.length
+  }
+
+  ngOnDestroy(): void {
+    this.subSink.unsubscribe()
   }
 }

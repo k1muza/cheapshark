@@ -61,9 +61,8 @@ export class DealListComponent implements OnInit, OnDestroy {
     // Listen to changes in url query params (e.g. pageNumber, title etc) and fetch
 
     this.subSink.sink = this.route.queryParams.pipe(
-      tap(() => {
-        this.loading = true;
-      }),
+
+      tap(() => this.loading = true),
       debounceTime(500),
       switchMap((params: DealQueryParams) => this.dealService.getDeals(params)),
 
