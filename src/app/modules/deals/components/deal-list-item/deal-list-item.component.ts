@@ -27,8 +27,6 @@ export class DealListItemComponent implements OnInit {
       queryParams[attrib] = (<any>this.deal)[attrib]
     })
 
-    console.log(queryParams)
-
     this.router.navigate(['deals', 'details'], { queryParams })
   }
 }

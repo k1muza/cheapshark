@@ -9,7 +9,6 @@ describe('StoreService', () => {
 
   beforeEach(() => {
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
-    console.log(httpClientSpy)
     TestBed.configureTestingModule({
       providers: [
         StoreService,

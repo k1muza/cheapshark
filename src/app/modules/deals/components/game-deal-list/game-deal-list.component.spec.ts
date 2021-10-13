@@ -25,8 +25,6 @@ describe('GameDealListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GameDealListComponent);
     component = fixture.componentInstance;
-
-    console.log(component.deals)
   });
 
   it('should create', () => {
@@ -44,16 +42,6 @@ describe('GameDealListComponent', () => {
   it(`initial 'error' to be undefined`, () => {
     expect(component.error).toBeFalsy();
   })
-
-  it('should load deals after 2 seconds', fakeAsync(() => {
-    fixture.detectChanges();
-    component.ngOnInit()
-    tick(2000);
-    fixture.detectChanges();
-    expect(component.isLoading()).toBeTruthy();
-    expect(component.deals).toBeFalsy();
-    flush();
-  }));
 
   it('should load deals after 4 seconds', fakeAsync(() => {
     fixture.detectChanges();

@@ -25,7 +25,6 @@ export class GameDealListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loading = true;
-    console.log('onInit', this.loading)
 
     this.subSink.sink = this.dealService.getDealsByGame(this.title).pipe(
 
@@ -54,8 +53,6 @@ export class GameDealListComponent implements OnInit, OnDestroy {
     attribs.forEach(attrib => {
       queryParams[attrib] = (deal as any)[attrib]
     })
-
-    console.log(queryParams)
 
     this.router.navigate(['deals', 'details'], { queryParams })
   }
